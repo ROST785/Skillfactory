@@ -14,12 +14,12 @@ class ValuesConverter:
             raise APIException(f"Невозможно перевести одинаковые валюты {value1}")
 
         try:
-            value1_ticker = keys[value1.lower()]
+            value1_ticker = keys[value1]
         except KeyError:
             raise APIException(f"Не удалось обработать валюту {value1}")
 
         try:
-            value2_ticker = keys[value2.lower()]
+            value2_ticker = keys[value2]
         except KeyError:
             raise APIException(f"Не удалось обработать валюту {value2}")
 
@@ -28,8 +28,7 @@ class ValuesConverter:
         except ValueError:
             raise APIException(f"Не удалось обработать количество {count}")
 
-        r = requests.get(f"https://api.exchangeratesapi.io/latest?base={value1_ticker}&symbols={value2_ticker}")
-        resp = json.loads(r.content)
-        total_value2 = resp['rates'][keys[value2]] * count
+        r = requests.get(f"https://min-api.cryptocompare.com/data/price?fsym={value1_ticker}&tsyms={value2_ticker}")
+        total_value2 = round(json.loads(r.content)[keys[value2]] * count, 3)
 
         return total_value2

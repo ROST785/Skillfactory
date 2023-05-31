@@ -28,7 +28,7 @@ def convert(message: telebot.types.Message):
         values = message.text.split(" ")
 
         if len(values) != 3:
-            raise APIException("Слишком много параметров")
+            raise APIException("Должно быть 3 параметра")
 
         value1, value2, count = values
         total_value2 = ValuesConverter.get_price(value1, value2, count)
